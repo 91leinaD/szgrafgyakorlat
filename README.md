@@ -15,7 +15,7 @@
 ## Jövőbeli tervek:
 - F1 gomb lenyomásával egy leírás legyen elérhető.
 - ESC gomb lenyomásával lépjen ki a játékból.
-- az + és - gombok használatával a fényerő módosítása.
+- a + és - gombok használatával a fényerő módosítása.
 - ugrás és guggolás kivitelezése
 ### Objektumok:
 - bútor, kandalló, fa, bokor
