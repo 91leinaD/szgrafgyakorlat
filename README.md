@@ -8,7 +8,7 @@
 - A játék alatt egy zene ismétlődik.
 
 ### Objektumok:
-- ház, gyűrű, mellék épület, ellenség (gollum), skybox (gömb), domborzat
+- ház, gyűrű, melléképület, ellenség (gollum), skybox (gömb), domborzat
 - minden létrehozott objektum rendelkezik saját textúrával.
 - a gyűrű egy helyben forog.
 
