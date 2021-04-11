@@ -11,17 +11,17 @@ Minden létrehozott objektum rendelkezik saját textúrával.
 A gyűrű egy helyben forog.
 A játék alatt egy zene ismétlődik.
 
-##Jövőbeli tervek:
-F1 gomb lenyomásával egy leírás legyen elérhető
-ESC gomb lenyomásával lépjen ki a játékból
- a + és - gombok használatával a fényerő módosítása.
+## Jövőbeli tervek:
+F1 gomb lenyomásával egy leírás legyen elérhető.
+ESC gomb lenyomásával lépjen ki a játékból.
+Az + és - gombok használatával a fényerő módosítása.
 ugrás és guggolás kivitelezése
 Objektumok:
 - bútorok, kandalló, fa, bokor
 Többlet funkciók:
-Bonyolultabb animáció: Az ellenséget jelképező modell sajátos mozgása
-Részecskerendszerek: A kandallóban lévő tűz kivitelezése
-AI: az ellenséges modell üldözze a pozíciónkat, ha elkap újraindul a játék.
-Ütközésvizsgálat: Egyik objektumon se tudjunk áthaladni.
-Köd:-
-Térkép kezelése:-
+- Bonyolultabb animáció: Az ellenséget jelképező modell sajátos mozgása
+- Részecskerendszerek: A kandallóban lévő tűz kivitelezése
+- AI: az ellenséges modell üldözze a pozíciónkat, ha elkap újraindul a játék.
+- Ütközésvizsgálat: Egyik objektumon se tudjunk áthaladni.
+- Köd:-
+- Térkép kezelése:-
