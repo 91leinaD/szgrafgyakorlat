@@ -1,6 +1,6 @@
 # The Lord of the Rings: The Game
 
-### [Data link](https://drive.google.com/drive/folders/1fKK7ryVQAHzscToGykAj8NAIIyDsHXCF?usp=sharing)
+### [Data link](https://drive.google.com/drive/folders/10_3ZuJCxBITgEiK58I_5-QZmLfugmye9?usp=sharing)
 
 ## Megvalósított:
 - A programban lehetőség van mozgásra az ismert W, A, S, D gombok használatával.
