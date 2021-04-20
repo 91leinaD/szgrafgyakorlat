@@ -8,6 +8,9 @@
 - Az x gomb nyomva tartásával gyorsabb a mozgási sebesség.
 - A programablak a képernyő közepére került.
 - A játék alatt egy zene ismétlődik.
+- ESC gomb lenyomásával kilép a programból.
+- A c gomb lenyomásával leguggol a játékos, ismételt lenyomásra felkel.
+- A Space gomb lenyomásával ugrik.
 
 ### Objektumok:
 - ház, gyűrű, melléképület, ellenség (gollum), skybox (gömb), domborzat
@@ -16,9 +19,7 @@
 
 ## Jövőbeli tervek:
 - F1 gomb lenyomásával egy leírás legyen elérhető.
-- ESC gomb lenyomásával lépjen ki a játékból.
 - a + és - gombok használatával a fényerő módosítása.
-- ugrás és guggolás kivitelezése
 ### Objektumok:
 - bútor, kandalló, fa, bokor
 ### Többlet funkciók:
