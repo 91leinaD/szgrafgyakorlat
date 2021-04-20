@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     int windowsize_w = 1024;
     int windowsize_h = 768;
     
-    PlaySound("music.wav", NULL, SND_ASYNC|SND_FILENAME|SND_LOOP);
+    PlaySound("data/sound/music.wav", NULL, SND_ASYNC|SND_FILENAME|SND_LOOP);
 
     glutInit(&argc, argv);
     glutInitWindowSize(windowsize_w, windowsize_h);     

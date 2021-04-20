@@ -4,7 +4,7 @@
 #include "camera.h"
 #include "texture.h"
 
-#include <model.h>
+#include <obj/model.h>
 
 typedef struct Scene
 {

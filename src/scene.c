@@ -3,25 +3,25 @@
 #include <GL/glut.h>
 
 #include <math.h>
-#include <load.h>
-#include <draw.h>
+#include <obj/load.h>
+#include <obj/draw.h>
 
 void init_scene(Scene* scene)
 {
-    load_model(&(scene->ring), "objects/ring.obj");
-    load_model(&(scene->sky), "objects/sky.obj");
-    load_model(&(scene->ground), "objects/ground.obj"); 
-    load_model(&(scene->house), "objects/house.obj");
-    load_model(&(scene->toilet), "objects/toilet.obj");
-    load_model(&(scene->gollum), "objects/gollum.obj");
+    load_model(&(scene->ring), "data/objects/ring.obj");
+    load_model(&(scene->sky), "data/objects/sky.obj");
+    load_model(&(scene->ground), "data/objects/ground.obj"); 
+    load_model(&(scene->house), "data/objects/house.obj");
+    load_model(&(scene->toilet), "data/objects/toilet.obj");
+    load_model(&(scene->gollum), "data/objects/gollum.obj");
     
 
-    scene->texture_id = load_texture("textures/ring.png"); 
-    scene->sky_texture_id = load_texture("textures/sky.png"); 
-    scene->ground_texture_id = load_texture("textures/ground.png"); 
-    scene->house_texture_id = load_texture("textures/house.jpg");
-    scene->toilet_texture_id = load_texture("textures/toilet.jpg");
-    scene->gollum_texture_id = load_texture("textures/gollum.jpg");
+    scene->texture_id = load_texture("data/textures/ring.png"); 
+    scene->sky_texture_id = load_texture("data/textures/sky.png"); 
+    scene->ground_texture_id = load_texture("data/textures/ground.png"); 
+    scene->house_texture_id = load_texture("data/textures/house.jpg");
+    scene->toilet_texture_id = load_texture("data/textures/toilet.jpg");
+    scene->gollum_texture_id = load_texture("data/textures/gollum.jpg");
 
     /*rings*/
     scene->material.ambient.red = 0.24725;
