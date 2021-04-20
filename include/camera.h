@@ -48,4 +48,10 @@ void set_camera_speed(Camera* camera, double speed);
  */
 void set_camera_side_speed(Camera* camera, double speed);
 
+void crouch(Camera* camera, int crouch);
+
+void jump(Camera* camera);
+
+void jump_stop(Camera* camera);
+
 #endif /* CAMERA_H */

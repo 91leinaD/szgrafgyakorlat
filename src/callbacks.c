@@ -1,7 +1,11 @@
 #include "callbacks.h"
+#include "scene.h"
 
 #define VIEWPORT_RATIO (4.0 / 3.0)
 #define VIEWPORT_ASPECT 50.0
+
+int help, help_on = 0;
+int iscrouch = 0;
 
 struct {
     int x;
@@ -78,6 +82,14 @@ void motion(int x, int y)
     mouse_position.y = 0;
     
 }
+void SpecialKeyHandler(int key, int x, int y)
+{
+    switch (key) {
+        case GLUT_KEY_F1:
+            printf("semmi");
+            break;
+    }
+}
 
 void keyboard(unsigned char key, int x, int y)
 {
@@ -94,7 +106,7 @@ void keyboard(unsigned char key, int x, int y)
     case 'd':
         set_camera_side_speed(&camera, -1);
         break;
-    case 't':
+    case 'm':
         if (is_preview_visible) {
             is_preview_visible = FALSE;
         }
@@ -105,6 +117,28 @@ void keyboard(unsigned char key, int x, int y)
     case 'x':
         set_camera_speed(&camera, 2.5);
         break;
+    case 'c':
+        if (iscrouch == 0) {
+            iscrouch = 1;
+            crouch(&camera, iscrouch);
+        }
+        else {
+            iscrouch = 0;
+            crouch(&camera, iscrouch);
+        }
+		break;
+     case 32:
+	        jump(&camera);
+            printf("semmi");
+	    break;
+    case '+':
+
+		break;
+	case '-':	
+
+		break;
+    case 27:
+		    exit(0);
     }
 
     glutPostRedisplay();
@@ -124,7 +158,9 @@ void keyboard_up(unsigned char key, int x, int y)
     case 'd':
         set_camera_side_speed(&camera, 0.0);
         break;
-    
+    case 32:
+	    jump_stop(&camera);
+        break;
     }
 
     glutPostRedisplay();

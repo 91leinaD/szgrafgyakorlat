@@ -31,8 +31,15 @@ void update_camera(Camera* camera, double time)
     camera->position.y += sin(angle) * camera->speed.y * time;
     camera->position.x += cos(side_angle) * camera->speed.x * time;
     camera->position.y += sin(side_angle) * camera->speed.x * time;
+    camera->position.z += camera->speed.z * time;      
+     
     /*printf("x %f,y %f, z %f \n",camera->position.x,camera->position.y,camera->position.z);*/
     /*printf("x %f,y %f, z %f \n",camera->rotation.x,camera->rotation.y,camera->rotation.z);*/
+
+    if (camera->position.z < 1.0 && camera->position.z > 0.8 ){
+        camera->speed.z = 0;
+        camera->position.z = 1.0;
+        }
     
 }
 
@@ -79,6 +86,37 @@ void set_camera_side_speed(Camera* camera, double speed)
     camera->speed.x = speed;
 }
 
+void jump(Camera* camera)
+{
+    
+    if (camera->position.z >= 1.5){
+        camera->speed.z = -1;
+        }
+    else if (camera->position.z <= 1.0){
+        camera->speed.z = 1;
+        }
+}
+
+void jump_stop(Camera* camera)
+{
+    if (camera->position.z <= 1.5 || camera->position.z > 1.0){
+        camera->speed.z = -1;
+        }
+    if (camera->position.z <= 1.0){
+        camera->speed.z = 0;
+        camera->position.z = 1.0;
+        }
+        
+    
+}
+
+void crouch(Camera* camera, int crouch)
+{
+    if (crouch == 0)
+        {camera->position.z = 0.5;}
+    else 
+        {camera->position.z = 1.0;}
+}
 void show_texture_preview()
 {
     glDisable(GL_LIGHTING);

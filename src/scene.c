@@ -6,6 +6,7 @@
 #include <obj/load.h>
 #include <obj/draw.h>
 
+
 void init_scene(Scene* scene)
 {
     load_model(&(scene->ring), "data/objects/ring.obj");
