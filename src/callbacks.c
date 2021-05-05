@@ -1,11 +1,15 @@
 #include "callbacks.h"
-#include "scene.h"
+#include "obj/draw.h"
+#include <obj/load.h>
+#include <GL/glut.h>
 
 #define VIEWPORT_RATIO (4.0 / 3.0)
 #define VIEWPORT_ASPECT 50.0
 
-int help, help_on = 0;
+int help_on = 0;
 int iscrouch = 0;
+
+float ambient_light[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 struct {
     int x;
@@ -14,17 +18,34 @@ struct {
 
 void display()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW);
-       
-    glPushMatrix();
-    set_view(&camera);
-    draw_scene(&scene);
-    glPopMatrix();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glMatrixMode(GL_MODELVIEW);
 
+        glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
+        
+        glPushMatrix();
+        set_view(&camera);
+        draw_scene(&scene);
+        glPopMatrix();
+    
     if (is_preview_visible) {
-        show_texture_preview();
+        /*show_texture_preview();*/
     }
+/*******
+****/
+    if(help_on)
+	{
+		glLoadIdentity();
+		gluOrtho2D(0, 1024, 768, 0);
+        
+		draw_help(scene.textures[7]);
+
+
+		glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
+	}
+    
+
     
     glutSwapBuffers();
 }
@@ -54,6 +75,9 @@ void reshape(GLsizei width, GLsizei height)
     gluPerspective(VIEWPORT_ASPECT, VIEWPORT_RATIO, 0.01, 10000.0);
 }
 
+
+
+
 void mouse(int button, int state, int x, int y)
 {
     
@@ -64,14 +88,12 @@ void mouse(int button, int state, int x, int y)
 void motion(int x, int y)
 {
     glutSetCursor(GLUT_CURSOR_CROSSHAIR);
-    /* two variables to store X and Y coordinates, as observed from the center
-      of the window
-    */
+   
     int dev_x,dev_y;
     dev_x = (1024/2)-x;
     dev_y = (768/2)-y;
 
-    /* apply the changes to pitch and yaw*/
+   
     mouse_position.x+=(float)dev_x;
     mouse_position.y+=(float)dev_y;
     
@@ -86,8 +108,12 @@ void SpecialKeyHandler(int key, int x, int y)
 {
     switch (key) {
         case GLUT_KEY_F1:
-            printf("semmi");
-            break;
+            if(help_on == 1)
+			{
+				help_on = 0;
+			}
+			else help_on = 1;
+            
     }
 }
 
@@ -129,13 +155,16 @@ void keyboard(unsigned char key, int x, int y)
 		break;
      case 32:
 	        jump(&camera);
-            printf("semmi");
 	    break;
     case '+':
-
+        if (ambient_light[0] < 1.5)
+            ambient_light[0] = ambient_light[1] = ambient_light[2] += 0.1;
+            glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
 		break;
 	case '-':	
-
+        if (ambient_light[0] > 0.0)
+			ambient_light[0] = ambient_light[1] = ambient_light[2] -= 0.1;
+            glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
 		break;
     case 27:
 		    exit(0);
@@ -180,4 +209,5 @@ void idle()
     update_scene(&scene, elapsed_time);
     glutWarpPointer(1024/2,768/2);
     glutPostRedisplay();
+    
 }

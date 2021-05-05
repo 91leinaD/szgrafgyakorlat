@@ -3,34 +3,51 @@
 
 #include "camera.h"
 #include "texture.h"
+#include "utils.h"
 
 #include <obj/model.h>
 
 typedef struct Scene
 {
-    Model ring;
-    Model sky;
-    Model Tree;
-    Model ground;
-    Model house;
-    Model toilet;
-    Model gollum;
+    Model model[10];
     
     Material material;
     Material sky_material;
     Material ground_material;
     
-
-    GLuint texture_id;
+    GLuint textures[10];
+    GLuint ring_texture_id;
     GLuint ground_texture_id;
     GLuint sky_texture_id;
     GLuint house_texture_id;
     GLuint toilet_texture_id;
     GLuint gollum_texture_id;
+    GLuint fireplace_texture_id;
+    GLuint help_texture_id;
 
     float rotation;
 } Scene;
 
+typedef struct Particle
+{
+      float fLife;            // élettartam
+      float fAlpha;           // átlátszóság
+      float fFade;            // elhalványulás mértéke
+      Color pColor;       // szín
+      Material particle;
+      float fSize;            // méret
+      vec3 vPos;             // hely
+      vec3 vSpeed;           // sebesség
+      float fSum;           /* number of particle*/
+
+} Particle;
+
+void Add(Particle* particle);        // egy részecske hozzáadása
+
+void object_reader(Scene* scene);
+void texture_reader(Scene* scene);
+
+struct Scene allmodel[1];
 /**
  * Initialize the scene by loading models.
  */
@@ -57,6 +74,6 @@ void draw_scene(const Scene* scene);
 /**
  * Draw the origin of the world coordinate system.
  */
-void draw_origin();
+void draw_particle();
 
 #endif /* SCENE_H */

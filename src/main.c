@@ -37,7 +37,6 @@ int main(int argc, char* argv[])
     glutInit(&argc, argv);
     glutInitWindowSize(windowsize_w, windowsize_h);     
 
-/*window to center*/
     glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-windowsize_w)/2,
     (glutGet(GLUT_SCREEN_HEIGHT)-windowsize_h)/2);
 
@@ -50,7 +49,6 @@ int main(int argc, char* argv[])
     init_scene(&scene);
     init_camera(&camera);
     set_callbacks();
-    
     glutMainLoop();
 
     return 0;

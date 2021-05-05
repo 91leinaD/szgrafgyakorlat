@@ -1,4 +1,5 @@
 #include "scene.h"
+#include "string.h"
 
 #include <GL/glut.h>
 
@@ -7,23 +8,73 @@
 #include <obj/draw.h>
 
 
+void object_reader(Scene* scene)
+{
+    int i = 0;
+    FILE *fp;
+    char str[1000];
+    char* filename = "data/objects/objloader.txt";
+    char name[200];
+    char *names;
+    fp = fopen(filename, "r");
+    if (fp == NULL){
+        printf("Could not open file %s",filename);
+        
+    }
+   
+    while (fgets(str, sizeof name, fp) != NULL){
+        
+        names = strtok(str," ");
+
+        while( names != NULL ) {
+           
+            printf("%s\n", (char*)names );
+        
+            load_model(&(scene->model[i]), (char*)names);
+        
+            names = strtok(NULL, " ");
+            i++;
+        } 
+    }
+    
+    fclose(fp);
+}
+void texture_reader(Scene* scene)
+{
+    int i = 0;
+    FILE *fp;
+    char str[1000];
+    char* filename = "data/textures/texturesloader.txt";
+    char name[200];
+    char *names;
+    fp = fopen(filename, "r");
+    if (fp == NULL){
+        printf("Could not open file %s",filename);
+        
+    }
+   
+    while (fgets(str, sizeof name, fp) != NULL){
+        
+        names = strtok(str," ");
+
+        while( names != NULL ) {
+           
+            printf("%s\n", (char*)names );
+        
+            scene->textures[i] = load_texture((char*)names);
+            
+            names = strtok(NULL, " ");
+            i++;
+        } 
+    }
+    
+    fclose(fp);
+}
 void init_scene(Scene* scene)
 {
-    load_model(&(scene->ring), "data/objects/ring.obj");
-    load_model(&(scene->sky), "data/objects/sky.obj");
-    load_model(&(scene->ground), "data/objects/ground.obj"); 
-    load_model(&(scene->house), "data/objects/house.obj");
-    load_model(&(scene->toilet), "data/objects/toilet.obj");
-    load_model(&(scene->gollum), "data/objects/gollum.obj");
-    
-
-    scene->texture_id = load_texture("data/textures/ring.png"); 
-    scene->sky_texture_id = load_texture("data/textures/sky.png"); 
-    scene->ground_texture_id = load_texture("data/textures/ground.png"); 
-    scene->house_texture_id = load_texture("data/textures/house.jpg");
-    scene->toilet_texture_id = load_texture("data/textures/toilet.jpg");
-    scene->gollum_texture_id = load_texture("data/textures/gollum.jpg");
-
+    object_reader(scene);
+    texture_reader(scene);
+   
     /*rings*/
     scene->material.ambient.red = 0.24725;
     scene->material.ambient.green = 0.1995;
@@ -73,14 +124,13 @@ void init_scene(Scene* scene)
     
 }
 
+
 void set_lighting()
 {
-    float ambient_light[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     float diffuse_light[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     float specular_light[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     float position[] = { 0.0f, 0.0f, 10.0f, 1.0f };
 
-    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
     glLightfv(GL_LIGHT0, GL_POSITION, position);
@@ -120,74 +170,109 @@ void update_scene(Scene* scene, double time)
 
 void draw_scene(const Scene* scene)
 {
+    glEnable(GL_TEXTURE_2D);
     set_material(&(scene->material));
     set_lighting();
-    draw_origin();
-    
+    /*draw_particle();*/
+
+    /*ring1*/
     glPushMatrix();
     glTranslatef(-1,-4,0.9);
     glRotatef(scene->rotation, 0, 0, 1);
-    glBindTexture(GL_TEXTURE_2D, scene->texture_id);
-    draw_model(&(scene->ring));
+    glBindTexture(GL_TEXTURE_2D, scene->textures[0]);
+    draw_model(&(scene->model[0]));
     glPopMatrix();
-    
+    /*ring2*/
     glPushMatrix();
     glTranslatef(-2,3,0.9);
     glRotatef(scene->rotation, 0, 1, -1);
-    draw_model(&(scene->ring));
+    draw_model(&(scene->model[0]));
     glPopMatrix();
-
+    /*ring3*/
     glPushMatrix();
     glTranslatef(1.75, 7.87,0.45);
     glRotatef(scene->rotation, 0, 1, -1);
-    draw_model(&(scene->ring));
+    draw_model(&(scene->model[0]));
     glPopMatrix();
 
-
+    /*skybox*/
     set_material(&(scene->sky_material));
     glPushMatrix();
     glTranslatef(0, 0, 0);
     glRotatef(180, 0, 1, 1);
-    glBindTexture(GL_TEXTURE_2D, scene->sky_texture_id);
-    draw_model(&(scene->sky));
+    glBindTexture(GL_TEXTURE_2D, scene->textures[1]);
+    draw_model(&(scene->model[1]));
     glPopMatrix();
-
+    /*ground*/
     set_material(&(scene->ground_material));
     glPushMatrix();
     glTranslatef(0, 0, 0);
     glRotatef(180, 0, 1, 1);
-    glBindTexture(GL_TEXTURE_2D, scene->ground_texture_id);
-    draw_model(&(scene->ground));
+    glBindTexture(GL_TEXTURE_2D, scene->textures[2]);
+    draw_model(&(scene->model[2]));
     glPopMatrix();
     /*house*/
     glPushMatrix();
     glTranslatef(0, 0, 0.3);
     glRotatef(180, 0, 1, 1);
-    glBindTexture(GL_TEXTURE_2D, scene->house_texture_id);
-    draw_model(&(scene->house));
+    glBindTexture(GL_TEXTURE_2D, scene->textures[3]);
+    draw_model(&(scene->model[3]));
     glPopMatrix();
-
+    /*fireplace*/
+    glPushMatrix();
+    glTranslatef(0, -1.44, 0);
+    glRotatef(180, 0, 1, 1);
+    glBindTexture(GL_TEXTURE_2D, scene->textures[6]);
+    draw_model(&(scene->model[6]));
+    glPopMatrix();
+    /*toilet*/
     glPushMatrix();
     glTranslatef(1.75, 7.87, 0);
     glRotatef(90, 50, 1, 1);
-    glBindTexture(GL_TEXTURE_2D, scene->toilet_texture_id);
-    draw_model(&(scene->toilet));
+    glBindTexture(GL_TEXTURE_2D, scene->textures[4]);
+    draw_model(&(scene->model[4]));
     glPopMatrix();
-
+    /*gollum*/
     glPushMatrix();
     glTranslatef(2.55, 5.87,0);
     glRotatef(90, 50, 1, 1);
-    glBindTexture(GL_TEXTURE_2D, scene->gollum_texture_id);
-    draw_model(&(scene->gollum));
+    glBindTexture(GL_TEXTURE_2D, scene->textures[5]);
+    draw_model(&(scene->model[5]));
     glPopMatrix();
     
 }
 
-void draw_origin()
+void draw_help(int texture) {
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0);
+	glVertex3f(0, 0, 0);
+
+	glTexCoord2f(1, 0);
+	glVertex3f(1024, 0, 0);
+
+	glTexCoord2f(1, 1);
+	glVertex3f(1024, 768, 0);
+
+	glTexCoord2f(0, 1);
+	glVertex3f(0, 768, 0);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+    
+}
+
+void draw_particle()
 {
-    glBegin(GL_LINES);
+    /*glBegin(GL_QUADS);
 
     glColor3f(1, 0, 0);
+    glTexCoord2f(1, 0);
     glVertex3f(0, 0, 0);
     glVertex3f(1, 0, 0);
 
@@ -199,5 +284,19 @@ void draw_origin()
     glVertex3f(0, 0, 0);
     glVertex3f(0, 0, 1);
 
-    glEnd();
+    glEnd();*/
+
+    glBegin(GL_QUADS);
+	glTexCoord2f(0, 0);
+	glVertex3f(0, 0, 0);
+
+	glTexCoord2f(1, 0);
+	glVertex3f(4, 0, 0);
+
+	glTexCoord2f(4, 4);
+	glVertex3f(4, 4, 0);
+
+	glTexCoord2f(0, 1);
+	glVertex3f(0, 4, 0);
+	glEnd();
 }

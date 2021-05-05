@@ -11,20 +11,21 @@
 - ESC gomb lenyomásával kilép a programból.
 - A c gomb lenyomásával leguggol a játékos, ismételt lenyomásra felkel.
 - A Space gomb lenyomásával ugrik.
+- a + és - gombok használatával a fényerő módosítása.
 
 ### Objektumok:
-- ház, gyűrű, melléképület, ellenség (gollum), skybox (gömb), domborzat
+- ház, gyűrű, melléképület, ellenség (gollum), skybox (gömb), domborzat, kandalló
 - minden létrehozott objektum rendelkezik saját textúrával.
 - a gyűrű egy helyben forog.
 
 ## Jövőbeli tervek:
 - F1 gomb lenyomásával egy leírás legyen elérhető.
-- a + és - gombok használatával a fényerő módosítása.
+
 ### Objektumok:
-- bútor, kandalló, fa, bokor
+- bútor, fa, bokor
 ### Többlet funkciók:
-- Bonyolultabb animáció: Az ellenséget jelképező modell sajátos mozgása
-- Részecskerendszerek: A kandallóban lévő tűz kivitelezése
+- Bonyolultabb animáció: Az ellenséget jelképező modell integet.
+- Részecskerendszerek: A kandallóban lévő tűz kivitelezése.
 - AI: az ellenséges modell üldözze a pozíciónkat, ha elkap újraindul a játék.
 - Ütközésvizsgálat: Egyik objektumon se tudjunk áthaladni.
 - Köd:-
