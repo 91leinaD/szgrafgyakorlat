@@ -16,14 +16,6 @@ typedef struct Scene
     Material ground_material;
     
     GLuint textures[10];
-    GLuint ring_texture_id;
-    GLuint ground_texture_id;
-    GLuint sky_texture_id;
-    GLuint house_texture_id;
-    GLuint toilet_texture_id;
-    GLuint gollum_texture_id;
-    GLuint fireplace_texture_id;
-    GLuint help_texture_id;
 
     float rotation;
 } Scene;
