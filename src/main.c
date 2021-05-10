@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     int windowsize_w = 1024;
     int windowsize_h = 768;
     
-    /*PlaySound("data/sound/music.wav", NULL, SND_ASYNC|SND_FILENAME|SND_LOOP);*/
+    PlaySound("data/sound/music.wav", NULL, SND_ASYNC|SND_FILENAME|SND_LOOP);
 
     glutInit(&argc, argv);
     glutInitWindowSize(windowsize_w, windowsize_h);     
@@ -47,6 +47,8 @@ int main(int argc, char* argv[])
     
     init_opengl();
     init_scene(&scene);
+    init_gollum(&gollum);
+    init_fire(&fire);
     init_camera(&camera);
     set_callbacks();
     glutMainLoop();

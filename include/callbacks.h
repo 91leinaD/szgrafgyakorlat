@@ -16,6 +16,12 @@ Scene scene;
  */
 Camera camera;
 
+Gollum gollum;
+
+Fire fire;
+
+Particle particle;
+
 /**
  * Call when need to display the graphical content.
  */

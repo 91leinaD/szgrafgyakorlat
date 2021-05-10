@@ -19,35 +19,41 @@ struct {
 void display()
 {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        
         glMatrixMode(GL_MODELVIEW);
-
+        
         glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
         
         glPushMatrix();
+        
         set_view(&camera);
         draw_scene(&scene);
+        glPushMatrix();
+        draw_fire(&fire, &camera);
         glPopMatrix();
-    
-    if (is_preview_visible) {
-        /*show_texture_preview();*/
-    }
-/*******
-****/
-    if(help_on)
-	{
-		glLoadIdentity();
-		gluOrtho2D(0, 1024, 768, 0);
+        glPushMatrix();
+        draw_particle(&particle);
+        glPopMatrix();
+        draw_gollum(&gollum,&camera);
         
-		draw_help(scene.textures[7]);
+        glPopMatrix();
 
+        if (is_preview_visible) {
+            show_texture_preview();
+        }
 
-		glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
-	}
-    
+        if(help_on)
+        {
+            glLoadIdentity();    
+            
+            gluOrtho2D(0, 640, 480, 0);
+            
+            draw_help(scene.textures[6]);
 
-    
-    glutSwapBuffers();
+            glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
+        }
+        
+        glutSwapBuffers();
 }
 
 void reshape(GLsizei width, GLsizei height)
@@ -207,6 +213,9 @@ void idle()
 
     update_camera(&camera, elapsed_time);
     update_scene(&scene, elapsed_time);
+    update_gollum(&gollum);
+    update_fire(&fire);
+
     glutWarpPointer(1024/2,768/2);
     glutPostRedisplay();
     

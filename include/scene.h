@@ -9,23 +9,56 @@
 
 typedef struct Scene
 {
-    Model model[10];
+    Model model[15];
     
     Material material;
     Material sky_material;
     Material ground_material;
     
-    GLuint textures[10];
+    GLuint textures[12];
 
     float rotation;
 } Scene;
+
+
+typedef struct Gollum
+{
+    Model animation_gollum[51];
+
+    Material gollum_material;
+
+    GLuint texture_gollum;
+    
+    float rotation;
+    
+    int last_frame_time;
+    int last_frame_number;
+    int time;
+
+} Gollum;
+
+typedef struct Fire
+{
+    Model animation_fire[3];
+
+    Material fire_material;
+
+    GLuint texture_fire;
+    
+    float rotation;
+    
+    int last_frame_time;
+    int last_frame_number;
+    int time;
+
+} Fire;
 
 typedef struct Particle
 {
       float fLife;            // élettartam
       float fAlpha;           // átlátszóság
       float fFade;            // elhalványulás mértéke
-      Color pColor;       // szín
+      GLuint texture;
       Material particle;
       float fSize;            // méret
       vec3 vPos;             // hely
@@ -34,12 +67,27 @@ typedef struct Particle
 
 } Particle;
 
+
+
 void Add(Particle* particle);        // egy részecske hozzáadása
 
 void object_reader(Scene* scene);
 void texture_reader(Scene* scene);
 
-struct Scene allmodel[1];
+void gollum_reader(Gollum* gollum);
+void fire_reader(Fire* fire);
+
+void draw_gollum(Gollum* gollum, Camera* camera);
+void draw_fire(Fire* fire, Camera* camera);
+
+void init_gollum(Gollum* gollum);
+void init_fire(Fire* fire);
+
+void update_gollum(Gollum* gollum);
+void update_fire(Fire* fire);
+
+void draw_particle(Particle* particle);
+
 /**
  * Initialize the scene by loading models.
  */
@@ -66,6 +114,5 @@ void draw_scene(const Scene* scene);
 /**
  * Draw the origin of the world coordinate system.
  */
-void draw_particle();
 
 #endif /* SCENE_H */

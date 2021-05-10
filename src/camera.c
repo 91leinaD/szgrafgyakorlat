@@ -112,7 +112,7 @@ void jump_stop(Camera* camera)
 
 void crouch(Camera* camera, int crouch)
 {
-    if (crouch == 0)
+    if (crouch == 1)
         {camera->position.z = 0.5;}
     else 
         {camera->position.z = 1.0;}

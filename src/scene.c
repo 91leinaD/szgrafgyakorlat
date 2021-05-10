@@ -1,4 +1,6 @@
 #include "scene.h"
+#include "callbacks.h"
+#include "camera.h"
 #include "string.h"
 
 #include <GL/glut.h>
@@ -12,9 +14,9 @@ void object_reader(Scene* scene)
 {
     int i = 0;
     FILE *fp;
-    char str[1000];
+    char str[10000];
     char* filename = "data/objects/objloader.txt";
-    char name[200];
+    char name[2000];
     char *names;
     fp = fopen(filename, "r");
     if (fp == NULL){
@@ -43,9 +45,9 @@ void texture_reader(Scene* scene)
 {
     int i = 0;
     FILE *fp;
-    char str[1000];
+    char str[10000];
     char* filename = "data/textures/texturesloader.txt";
-    char name[200];
+    char name[2000];
     char *names;
     fp = fopen(filename, "r");
     if (fp == NULL){
@@ -70,10 +72,200 @@ void texture_reader(Scene* scene)
     
     fclose(fp);
 }
+
+void gollum_reader(Gollum* gollum)
+{
+    int i = 0;
+    FILE *fp;
+    char str[10000];
+    char* filename = "data/animation/gollum.txt";
+    char name[2000];
+    char *names;
+    fp = fopen(filename, "r");
+    if (fp == NULL){
+        printf("Could not open file %s",filename);
+        
+    }
+   
+    while (fgets(str, sizeof name, fp) != NULL){
+        
+        names = strtok(str," ");
+
+        while( names != NULL ) {
+           
+            /*printf("%s\n", (char*)names );*/
+        
+            load_model(&(gollum->animation_gollum[i]), (char*)names);
+        
+            names = strtok(NULL, " ");
+            i++;
+        } 
+    }
+    gollum->texture_gollum = load_texture("data/animation/gollum.jpg");
+    
+    fclose(fp);
+}
+void fire_reader(Fire* fire)
+{
+    int i = 0;
+    FILE *fp;
+    char str[10000];
+    char* filename = "data/animation/fire.txt";
+    char name[2000];
+    char *names;
+    fp = fopen(filename, "r");
+    if (fp == NULL){
+        printf("Could not open file %s",filename);
+        
+    }
+   
+    while (fgets(str, sizeof name, fp) != NULL){
+        
+        names = strtok(str," ");
+
+        while( names != NULL ) {
+           
+            /*printf("%s\n", (char*)names );*/
+        
+            load_model(&(fire->animation_fire[i]), (char*)names);
+        
+            names = strtok(NULL, " ");
+            i++;
+        } 
+    }
+    fire->texture_fire = load_texture("data/animation/fire.png");
+    
+    fclose(fp);
+}
+
+
+void init_gollum(Gollum* gollum)
+{
+    gollum_reader(gollum);
+
+    gollum->gollum_material.ambient.red = 0.2;
+    gollum->gollum_material.ambient.green = 0.2;
+    gollum->gollum_material.ambient.blue = 0.2;
+
+    gollum->gollum_material.diffuse.red = 0.2;
+    gollum->gollum_material.diffuse.green = 0.2;
+    gollum->gollum_material.diffuse.blue = 0.2;
+
+    gollum->gollum_material.specular.red = 0.0;
+    gollum->gollum_material.specular.green = 0.0;
+    gollum->gollum_material.specular.blue = 0.0;
+
+    gollum->gollum_material.shininess = 0.1;
+
+
+}
+void init_fire(Fire* fire)
+{
+    fire_reader(fire);
+    
+    fire->fire_material.ambient.red = 0.8;
+    fire->fire_material.ambient.green = 0.8;
+    fire->fire_material.ambient.blue = 0.8;
+
+    fire->fire_material.diffuse.red = 0.8;
+    fire->fire_material.diffuse.green = 0.8;
+    fire->fire_material.diffuse.blue = 0.8;
+
+    fire->fire_material.specular.red = 0.8;
+    fire->fire_material.specular.green = 0.8;
+    fire->fire_material.specular.blue = 0.8;
+
+    fire->fire_material.shininess = 0.2;
+
+}
+void draw_gollum(Gollum* gollum, Camera* camera)
+{   
+    glEnable(GL_TEXTURE_2D);
+    set_lighting();
+    set_material(&(gollum->gollum_material));
+
+    gollum->rotation = camera->rotation.z;
+    glTranslatef(3.55, 4.87, 0.05);
+    glRotatef(95, 10, 0, 0);
+    glRotatef(gollum->rotation-90, 0, 1, 0);
+    glBindTexture(GL_TEXTURE_2D, gollum->texture_gollum);
+    draw_model(&(gollum->animation_gollum[gollum->last_frame_number]));
+}
+void draw_fire(Fire* fire, Camera* camera)
+{
+    
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_COLOR );
+    
+    glEnable(GL_TEXTURE_2D);
+
+    fire->rotation = (camera->rotation.z);
+    
+    /*printf("%f\n",fire->rotation);*/
+    set_material(&(fire->fire_material));
+    glTranslatef(0, -1.25, 0.3);
+    glRotatef(95, 10, 0, 0);
+    glRotatef(fire->rotation-90, 0, 1, 0);
+    glBindTexture(GL_TEXTURE_2D, fire->texture_fire);
+    draw_model(&(fire->animation_fire[fire->last_frame_number]));
+
+    glDisable( GL_BLEND );
+}
+
+
+void update_gollum(Gollum* gollum)
+{
+    int frames_lenght = 52;
+    double elapsed_time;
+    
+    int i = gollum->last_frame_number;
+        
+        gollum->time = glutGet(GLUT_ELAPSED_TIME);   
+        /*printf("%i animationtime\n",(animation->time));*/
+        elapsed_time = (double)(gollum->time - gollum->last_frame_time) / 100;
+            /*printf("%i \n",((int)elapsed_time%frames_lenght));*/
+        if(i == (int)elapsed_time%frames_lenght)
+        {
+            i++;
+           
+        }
+        if(i >= 51)
+        {
+             i=0;
+            gollum->last_frame_time = gollum->time;
+         }
+         gollum->last_frame_number=i;   
+}
+
+void update_fire(Fire* fire)
+{
+    int frames_lenght = 3;
+    double elapsed_time;
+    
+    int i = fire->last_frame_number;
+        
+        fire->time = glutGet(GLUT_ELAPSED_TIME);   
+        /*printf("%i animationtime\n",(fire->time));*/
+        elapsed_time = (double)(fire->time - fire->last_frame_time) / 500;
+           /*printf("%i \n",((int)elapsed_time%frames_lenght));*/
+        if(i == (int)elapsed_time%frames_lenght)
+        {
+            i++;
+        }
+        if(i >= 3)
+        {
+             i=0;
+            fire->last_frame_time = fire->time;
+         }
+         fire->last_frame_number=i;
+  
+    
+}
 void init_scene(Scene* scene)
 {
     object_reader(scene);
     texture_reader(scene);
+   
    
     /*rings*/
     scene->material.ambient.red = 0.24725;
@@ -134,6 +326,12 @@ void set_lighting()
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
     glLightfv(GL_LIGHT0, GL_POSITION, position);
+    
+
+    float position_fire[] = { 0.0f, -1.25f, 0.3f, 1.0f };
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse_light);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, specular_light);
+    glLightfv(GL_LIGHT1, GL_POSITION, position_fire);
 }
 
 void set_material(const Material* material)
@@ -222,8 +420,8 @@ void draw_scene(const Scene* scene)
     glPushMatrix();
     glTranslatef(0, -1.44, 0);
     glRotatef(180, 0, 1, 1);
-    glBindTexture(GL_TEXTURE_2D, scene->textures[6]);
-    draw_model(&(scene->model[6]));
+    glBindTexture(GL_TEXTURE_2D, scene->textures[5]);
+    draw_model(&(scene->model[5]));
     glPopMatrix();
     /*toilet*/
     glPushMatrix();
@@ -232,71 +430,56 @@ void draw_scene(const Scene* scene)
     glBindTexture(GL_TEXTURE_2D, scene->textures[4]);
     draw_model(&(scene->model[4]));
     glPopMatrix();
-    /*gollum*/
-    glPushMatrix();
-    glTranslatef(2.55, 5.87,0);
-    glRotatef(90, 50, 1, 1);
-    glBindTexture(GL_TEXTURE_2D, scene->textures[5]);
-    draw_model(&(scene->model[5]));
-    glPopMatrix();
     
 }
 
 void draw_help(int texture) {
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0);
-	glVertex3f(0, 0, 0);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_COLOR_MATERIAL);
 
-	glTexCoord2f(1, 0);
-	glVertex3f(1024, 0, 0);
+    glMatrixMode(GL_MODELVIEW);
+    
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glLoadIdentity();
+    glColor3f(1, 1, 1);
 
-	glTexCoord2f(1, 1);
-	glVertex3f(1024, 768, 0);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, 0);
+    glVertex3f(-1.99, 1.5, -3);
+    glTexCoord2f(1, 0);
+    glVertex3f(1.99, 1.5, -3);
+    glTexCoord2f(1, 1);
+    glVertex3f(1.99, -1.5, -3);
+    glTexCoord2f(0, 1);
+    glVertex3f(-1.99, -1.5, -3);
+    glEnd();
 
-	glTexCoord2f(0, 1);
-	glVertex3f(0, 768, 0);
-	glEnd();
-	glDisable(GL_TEXTURE_2D);
+    glDisable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
     
 }
 
-void draw_particle()
-{
-    /*glBegin(GL_QUADS);
-
-    glColor3f(1, 0, 0);
-    glTexCoord2f(1, 0);
-    glVertex3f(0, 0, 0);
-    glVertex3f(1, 0, 0);
-
-    glColor3f(0, 1, 0);
-    glVertex3f(0, 0, 0);
-    glVertex3f(0, 1, 0);
-
-    glColor3f(0, 0, 1);
-    glVertex3f(0, 0, 0);
-    glVertex3f(0, 0, 1);
-
-    glEnd();*/
+void draw_particle(Particle* particle)
+{   
+    glEnable(GL_COLOR_MATERIAL);
+    glMatrixMode(GL_MODELVIEW);
+    glBindTexture(GL_TEXTURE_2D, particle);
+    glLoadIdentity();
+    glColor3f(1, 0.4, 0);
 
     glBegin(GL_QUADS);
-	glTexCoord2f(0, 0);
-	glVertex3f(0, 0, 0);
-
-	glTexCoord2f(1, 0);
-	glVertex3f(4, 0, 0);
-
-	glTexCoord2f(4, 4);
-	glVertex3f(4, 4, 0);
-
-	glTexCoord2f(0, 1);
-	glVertex3f(0, 4, 0);
-	glEnd();
+    glTexCoord2f(0, 0);
+    glVertex3f(-1.1, 0.1, 1);
+    glTexCoord2f(1, 0);
+    glVertex3f(1.1, 0.1, 1);
+    glTexCoord2f(1, 1);
+    glVertex3f(1.1, -0.1, 1);
+    glTexCoord2f(0, 1);
+    glVertex3f(-1.1, -0.1, 1);
+    glEnd();
+    glDisable(GL_COLOR_MATERIAL);
 }
