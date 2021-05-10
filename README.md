@@ -22,12 +22,12 @@
 ### Működő többlet funkciók:
 - Bonyolultabb animáció: Az ellenséget jelképező modell integet. A kandallóban lévő tűz kivitelezése.
 - Billboard beállítva gollum-ra és a tűzre.
+- Részecskerendszer: A kandallóban lévő tűz objektum körüli szikrák.
 ## Jövőbeli tervek:
 
 ### Létrehozandó objektumok:
 - bútor, fa, bokor
 ### Várható többlet funkciók:
-- Részecskerendszerek: A kandallóban lévő tűz objektum körüli szikrák.
 - AI: az ellenséges modell üldözze a pozíciónkat, ha elkap újraindul a játék.
 - Ütközésvizsgálat: Egyik objektumon se tudjunk áthaladni.
 - Köd:-
