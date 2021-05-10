@@ -20,7 +20,7 @@ Gollum gollum;
 
 Fire fire;
 
-Particle particle;
+Particle particles[20];
 
 /**
  * Call when need to display the graphical content.

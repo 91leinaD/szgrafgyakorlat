@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
     init_opengl();
     init_scene(&scene);
     init_gollum(&gollum);
-    init_fire(&fire);
+    init_fire(&fire, &particles, 20);
     init_camera(&camera);
     set_callbacks();
     glutMainLoop();

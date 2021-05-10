@@ -55,18 +55,20 @@ typedef struct Fire
 
 typedef struct Particle
 {
-      float fLife;            // élettartam
-      float fAlpha;           // átlátszóság
-      float fFade;            // elhalványulás mértéke
-      GLuint texture;
-      Material particle;
-      float fSize;            // méret
-      vec3 vPos;             // hely
-      vec3 vSpeed;           // sebesség
-      float fSum;           /* number of particle*/
+    Model particle;
+    GLuint texture_particle;
+    int particle_life;            // élettartam
+    Material particle_material;
+    float particle_size;            // méret
+    vec3 particle_pos;             // hely
+    vec3 particle_speed;           // sebesség
+    float particle_sum;           /* number of particle*/
+    float rotation;
+    int particle_time;
+    int last_particle_time;
+    int last_particle_number;
 
 } Particle;
-
 
 
 void Add(Particle* particle);        // egy részecske hozzáadása
@@ -81,13 +83,13 @@ void draw_gollum(Gollum* gollum, Camera* camera);
 void draw_fire(Fire* fire, Camera* camera);
 
 void init_gollum(Gollum* gollum);
-void init_fire(Fire* fire);
+void init_fire(Fire* fire, Particle *particles, int numberOfParticles);
 
 void update_gollum(Gollum* gollum);
 void update_fire(Fire* fire);
 
-void draw_particle(Particle* particle);
-
+void draw_particle(Particle *particles, Camera* camera, int numberOfParticles);
+void update_particle(Particle *particles, int numberOfParticles);
 /**
  * Initialize the scene by loading models.
  */
@@ -97,6 +99,8 @@ void init_scene(Scene* scene);
  * Set the lighting of the scene.
  */
 void set_lighting();
+
+void set_lighting_fire();
 
 /**
  * Set the current material.

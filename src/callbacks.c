@@ -31,9 +31,10 @@ void display()
         glPushMatrix();
         draw_fire(&fire, &camera);
         glPopMatrix();
-        glPushMatrix();
-        draw_particle(&particle);
-        glPopMatrix();
+       
+       glPushMatrix();
+        draw_particle(&particles, &camera, 20);
+         glPopMatrix();
         draw_gollum(&gollum,&camera);
         
         glPopMatrix();
@@ -127,16 +128,16 @@ void keyboard(unsigned char key, int x, int y)
 {
     switch (key) {
     case 'w':
-        set_camera_speed(&camera, 1);
+        set_camera_speed(&camera, 2);
         break;
     case 's':
-        set_camera_speed(&camera, -1);
+        set_camera_speed(&camera, -2);
         break;
     case 'a':
-        set_camera_side_speed(&camera, 1);
+        set_camera_side_speed(&camera, 2);
         break;
     case 'd':
-        set_camera_side_speed(&camera, -1);
+        set_camera_side_speed(&camera, -2);
         break;
     case 'm':
         if (is_preview_visible) {
@@ -147,7 +148,7 @@ void keyboard(unsigned char key, int x, int y)
         }
         break;
     case 'x':
-        set_camera_speed(&camera, 2.5);
+        set_camera_speed(&camera, 3);
         break;
     case 'c':
         if (iscrouch == 0) {
@@ -183,7 +184,7 @@ void keyboard_up(unsigned char key, int x, int y)
 {
     switch (key) {
     case 'x':
-        set_camera_speed(&camera, 1);
+        set_camera_speed(&camera, 2);
         break;
     case 'w':
     case 's':
@@ -215,6 +216,7 @@ void idle()
     update_scene(&scene, elapsed_time);
     update_gollum(&gollum);
     update_fire(&fire);
+    update_particle(&particles,20);
 
     glutWarpPointer(1024/2,768/2);
     glutPostRedisplay();
