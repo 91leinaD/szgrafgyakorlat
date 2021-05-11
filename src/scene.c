@@ -29,7 +29,7 @@ void object_reader(Scene* scene)
 
         while( names != NULL ) {
            
-            printf("%s\n", (char*)names );
+            /*printf("%s\n", (char*)names );*/
         
             load_model(&(scene->model[i]), (char*)names);
         
@@ -63,7 +63,7 @@ void texture_reader(Scene* scene)
 
         while( names != NULL ) {
            
-            printf("%s\n", (char*)names );
+            /*printf("%s\n", (char*)names );*/
         
             scene->textures[i] = load_texture((char*)names);
             
@@ -184,7 +184,6 @@ void init_fire(Fire* fire, Particle *particles, int numberOfParticles)
         particles[i].particle_pos.x = 0;
         particles[i].particle_pos.y = -1.25;
         particles[i].particle_pos.z = 0.3;
-        particles[i].particle_life = i+10;
         particles[i].texture_particle = load_texture("data/animation/fire.png");
     }
 

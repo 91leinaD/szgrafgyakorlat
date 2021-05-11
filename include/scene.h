@@ -57,21 +57,16 @@ typedef struct Particle
 {
     Model particle;
     GLuint texture_particle;
-    int particle_life;            // élettartam
     Material particle_material;
-    float particle_size;            // méret
-    vec3 particle_pos;             // hely
-    vec3 particle_speed;           // sebesség
-    float particle_sum;           /* number of particle*/
+    float particle_size;           
+    vec3 particle_pos;             
+    vec3 particle_speed;           
     float rotation;
     int particle_time;
     int last_particle_time;
     int last_particle_number;
 
 } Particle;
-
-
-void Add(Particle* particle);        // egy részecske hozzáadása
 
 void object_reader(Scene* scene);
 void texture_reader(Scene* scene);
